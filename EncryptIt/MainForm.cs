@@ -233,6 +233,9 @@ namespace EncryptIt
 			catch(Exception f){
 				string error = f.ToString();
 				sw.Close();
+				initialFile.Clear();
+				onepass.Clear();
+				twopass.Clear();
 				WrongPwd pwdIncorrect = new WrongPwd();
 				pwdIncorrect.Show();
 				File.Delete(outputDecrypt);

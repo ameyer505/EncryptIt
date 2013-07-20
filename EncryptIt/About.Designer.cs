@@ -140,7 +140,7 @@ namespace EncryptIt
 			this.about_version.ReadOnly = true;
 			this.about_version.Size = new System.Drawing.Size(129, 20);
 			this.about_version.TabIndex = 9;
-			this.about_version.Text = "1.0";
+			this.about_version.Text = "1.1";
 			// 
 			// About
 			// 
