@@ -53,6 +53,7 @@ namespace EncryptIt
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutEncryptItToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.encryptionSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1.SuspendLayout();
 			this.encrypt_tab.SuspendLayout();
 			this.decrypt_tab.SuspendLayout();
@@ -195,6 +196,7 @@ namespace EncryptIt
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+									this.encryptionSettingsToolStripMenuItem,
 									this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -203,7 +205,7 @@ namespace EncryptIt
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
 			this.exitToolStripMenuItem.Text = "Exit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItemClick);
 			// 
@@ -221,6 +223,13 @@ namespace EncryptIt
 			this.aboutEncryptItToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
 			this.aboutEncryptItToolStripMenuItem.Text = "About EncryptIt";
 			this.aboutEncryptItToolStripMenuItem.Click += new System.EventHandler(this.AboutEncryptItToolStripMenuItemClick);
+			// 
+			// encryptionSettingsToolStripMenuItem
+			// 
+			this.encryptionSettingsToolStripMenuItem.Name = "encryptionSettingsToolStripMenuItem";
+			this.encryptionSettingsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+			this.encryptionSettingsToolStripMenuItem.Text = "Encryption Settings";
+			this.encryptionSettingsToolStripMenuItem.Click += new System.EventHandler(this.EncryptionSettingsToolStripMenuItemClick);
 			// 
 			// MainForm
 			// 
@@ -243,6 +252,7 @@ namespace EncryptIt
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.ToolStripMenuItem encryptionSettingsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutEncryptItToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;

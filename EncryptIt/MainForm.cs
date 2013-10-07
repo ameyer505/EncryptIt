@@ -22,6 +22,7 @@ using System.Runtime.InteropServices;
 
 namespace EncryptIt
 {
+	
 	/// <summary>
 	/// Description of MainForm.
 	/// </summary>
@@ -31,11 +32,11 @@ namespace EncryptIt
 		public string fileDecrypt;
 		public string outputEncrypt;
 		public string outputDecrypt;
-		ArrayList initialFile = new ArrayList();
-		ArrayList onepass = new ArrayList();
-		ArrayList twopass = new ArrayList();
+		public int numPass = 10;
 		const int keysize = 256;
-		const string initVector = "x2if5h4kap1w48g3";
+		//Generated using LastPass' random password generator
+		const string initVector = "Exm4ypIEs2owh8bB";
+		//const string initVector = "x2if5h4kap1w48g3";
 		SecureString pwd = new SecureString();
 		
 		public MainForm()
@@ -50,8 +51,6 @@ namespace EncryptIt
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
 		}
-		
-
 		
 		public void encryptFilePath(string path){
 			string[] breakup = path.Split('\\');
@@ -175,6 +174,8 @@ namespace EncryptIt
 		
 		public void encryptFile(){
 			String line;
+			ArrayList e1 = new ArrayList();
+			ArrayList e2 = new ArrayList();
 			StreamWriter sw = new StreamWriter(outputEncrypt);
 			IntPtr ptr = IntPtr.Zero;
 			ptr = Marshal.SecureStringToBSTR(pwd);
@@ -182,21 +183,23 @@ namespace EncryptIt
 			try{
 					StreamReader sr = new StreamReader(fileEncrypt);
 					while((line = sr.ReadLine()) != null){
-						initialFile.Add(line);
+						e2.Add(line);
 					}
-					foreach (string pass1 in initialFile){
-						onepass.Add(encrypt(pass1, hash));
+					for(int i = 0; i < numPass; i++){
+						foreach(string s1 in e2){
+							e1.Add(encrypt(s1, hash));
+						}
+						e2.Clear();
+						foreach(string s2 in e1){
+							e2.Add(encrypt(s2, hash));
+						}
+						e1.Clear();
 					}
-					initialFile.Clear();
-					foreach (string pass2 in onepass){
-						twopass.Add(encrypt(pass2, hash));
-					}
-					onepass.Clear();
-					foreach (string pass3 in twopass){
-						sw.WriteLine(encrypt(pass3, hash));
+					
+					foreach (string enc in e2){
+						sw.WriteLine(encrypt(enc, hash));
 					}
 					sw.Close();
-					twopass.Clear();
 					MessageBox.Show("Location of encrypted file:\n"+outputEncrypt);
 			}
 			catch(Exception f){
@@ -207,35 +210,39 @@ namespace EncryptIt
 		public void decryptFile(){
 			String line;
 			StreamWriter sw = new StreamWriter(outputDecrypt);
+			ArrayList d1 = new ArrayList();
+			ArrayList d2 = new ArrayList();
 			IntPtr ptr = IntPtr.Zero;
 			ptr = Marshal.SecureStringToBSTR(pwd);
 			string hash = getPasswordHash(Marshal.PtrToStringBSTR(ptr));
 			try{
 					StreamReader sr = new StreamReader(fileDecrypt);
 					while((line = sr.ReadLine()) != null){
-						initialFile.Add(line);
+						d2.Add(line);
 					}
-					foreach (string pass1 in initialFile){
-						onepass.Add(decrypt(pass1, hash));
+					
+					for(int i = 0; i < numPass; i++){
+						foreach(string s1 in d2){
+							d1.Add(decrypt(s1, hash));
+						}
+						d2.Clear();
+						foreach(string s2 in d1){
+							d2.Add(decrypt(s2, hash));
+						}
+						d1.Clear();
 					}
-					initialFile.Clear();
-					foreach (string pass2 in onepass){
-						twopass.Add(decrypt(pass2, hash));
-					}
-					onepass.Clear();
-					foreach (string pass3 in twopass){
-						sw.WriteLine(decrypt(pass3, hash));
+					
+					foreach (string dec in d2){
+						sw.WriteLine(decrypt(dec, hash));
 					}
 					sw.Close();
-					twopass.Clear();
 					MessageBox.Show("Location of decrypted file:\n"+outputDecrypt);
 			}
 			catch(Exception f){
 				string error = f.ToString();
 				sw.Close();
-				initialFile.Clear();
-				onepass.Clear();
-				twopass.Clear();
+				d1.Clear();
+				d2.Clear();
 				WrongPwd pwdIncorrect = new WrongPwd();
 				pwdIncorrect.Show();
 				File.Delete(outputDecrypt);
@@ -302,6 +309,13 @@ namespace EncryptIt
 		{
 			About about = new About();
 			about.ShowDialog();
+		}
+		
+		void EncryptionSettingsToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			SetPassNum pNum = new SetPassNum(numPass);
+			pNum.ShowDialog();
+			numPass = pNum.getPassNum();
 		}
 	}
 }
